@@ -11,6 +11,10 @@ const columns = [
     field: 'region',
   },
   {
+    title: 'Time',
+    field: 'dateTime',
+  },
+  {
     title: 'RealTime',
     field: 'isRealTime',
   },
@@ -25,6 +29,18 @@ const columns = [
   {
     title: 'Download Time',
     field: 'downloadTime',
+  },
+  {
+    title: 'Round Trip Time',
+    field: 'roundTripTime',
+  },
+  {
+    title: 'Segment Duration',
+    field: 'segmentDuration',
+  },
+  {
+    title: 'Segments recieved',
+    field: 'segmentsRecieved',
   },
 ];
 class statsTable extends React.Component {
@@ -58,19 +74,20 @@ class statsTable extends React.Component {
               upload_time,
               download_time,
             } = record;
-            const dateTime = new Date(timestamp).toLocaleTimeString('en-US');
-            const isRealTime = seg_duration < round_trip_time ? 'yes' : 'no';
+            const dateTime = new Date(timestamp * 1000).toLocaleString('en-US');
+            const isRealTime = seg_duration > round_trip_time ? 'yes' : 'no';
             const parsedRecord = {
               region,
               dateTime,
               isRealTime,
               orchestrator,
-              roundTripTime: round_trip_time,
+              roundTripTime: round_trip_time.toFixed(2),
               segmentsRecieved: segments_recieved,
               segmentsSent: segments_sent,
-              transcodeTime: transcode_time,
-              uploadTime: upload_time,
-              downloadTime: download_time,
+              segmentDuration: seg_duration.toFixed(2),
+              transcodeTime: transcode_time.toFixed(2),
+              uploadTime: upload_time.toFixed(2),
+              downloadTime: download_time.toFixed(2),
             };
             statsList.push(parsedRecord);
           }
