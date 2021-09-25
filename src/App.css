@@ -1,3 +1,7 @@
+#root {
+  width: 80%;
+}
+
 .App {
     color: red;
 }
@@ -9,4 +13,8 @@
 
 .MuiTable-root .MuiTableCell-root {
   padding: 8px;
+}
+
+.error {
+  color: red;
 }

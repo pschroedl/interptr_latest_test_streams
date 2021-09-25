@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
+import Tooltip from '@material-ui/core/Tooltip';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 
 const dataUrl = 'https://leaderboard-serverless.vercel.app/api/raw_stats?orchestrator=';
@@ -56,6 +57,19 @@ const columns = [
     title: 'Segments recieved',
     field: 'segmentsReceived',
     width: '80px',
+    render: (rowData) => {
+      let cell;
+      if (rowData.segmentsReceived !== 60) {
+        cell = <Tooltip title={rowData.error_json}>
+          <span className="error">
+            {rowData.segmentsReceived + '/60!'}
+          </span>
+        </Tooltip>;
+      } else {
+        cell = rowData.segmentsReceived + '/60';
+      }
+      return cell;
+    },
   },
 ];
 class statsTable extends React.Component {
@@ -90,7 +104,8 @@ class statsTable extends React.Component {
               download_time,
               errors,
             } = record;
-            const dateTime = new Date(timestamp * 1000).toLocaleString('en-US', { hour12: false });
+            let dateTime = new Date(timestamp * 1000).toLocaleString('en-US', { hour12: false });
+            dateTime = dateTime.split(',').join('');
             const fast = seg_duration > round_trip_time;
             const success = transcode_time > 0;
             const isRealTime = fast && success ? 'Yes' : 'No';
