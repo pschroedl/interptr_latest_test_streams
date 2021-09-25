@@ -15,38 +15,47 @@ const columns = [
   {
     title: 'Region',
     field: 'region',
+    width: '50px',
   },
   {
     title: 'Time',
     field: 'dateTime',
+    width: '100px',
   },
   {
     title: 'RealTime',
     field: 'isRealTime',
+    width: '80px',
   },
   {
     title: 'Transcode Time',
     field: 'transcodeTime',
+    width: '80px',
   },
   {
     title: 'Upload Time',
     field: 'uploadTime',
+    width: '80px',
   },
   {
     title: 'Download Time',
     field: 'downloadTime',
+    width: '80px',
   },
   {
     title: 'Round Trip Time',
     field: 'roundTripTime',
+    width: '80px',
   },
   {
     title: 'Segment Duration',
     field: 'segmentDuration',
+    width: '80px',
   },
   {
     title: 'Segments recieved',
     field: 'segmentsReceived',
+    width: '80px',
   },
 ];
 class statsTable extends React.Component {
@@ -79,16 +88,19 @@ class statsTable extends React.Component {
               transcode_time,
               upload_time,
               download_time,
+              errors,
             } = record;
-            const dateTime = new Date(timestamp * 1000).toLocaleString('en-US');
+            const dateTime = new Date(timestamp * 1000).toLocaleString('en-US', { hour12: false });
             const fast = seg_duration > round_trip_time;
             const success = transcode_time > 0;
             const isRealTime = fast && success ? 'Yes' : 'No';
+            const error_json = JSON.stringify(errors, undefined, 2);
             const parsedRecord = {
               region,
               dateTime,
               isRealTime,
               orchestrator,
+              error_json,
               roundTripTime: round_trip_time.toFixed(2),
               segmentsReceived: segments_received,
               segmentsSent: segments_sent,
@@ -112,6 +124,7 @@ class statsTable extends React.Component {
             data={this.state.leaderboardStats} columns={columns}
             icons={tableIcons}
             options={{
+              showTitle: false,
               search: false,
               pageSize: this.state.leaderboardStats.length,
               paging: false,
@@ -127,6 +140,7 @@ class statsTable extends React.Component {
                   backgroundColor: bg,
                 });
               },
+              tableLayout: 'fixed',
             }} />
         </div>
       </div>
