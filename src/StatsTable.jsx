@@ -44,7 +44,7 @@ const columns = [
     width: '80px',
   },
   {
-    title: 'Round Trip Time',
+    title: 'Roundtrip Time',
     field: 'roundTripTime',
     width: '80px',
   },
@@ -54,7 +54,7 @@ const columns = [
     width: '80px',
   },
   {
-    title: 'Segments recieved',
+    title: 'Segments Received',
     field: 'segmentsReceived',
     width: '80px',
     render: (rowData) => {
@@ -62,7 +62,7 @@ const columns = [
       if (rowData.segmentsReceived !== 60) {
         cell = <Tooltip title={rowData.error_json}>
           <span className="error">
-            {rowData.segmentsReceived + '/60!'}
+            {rowData.segmentsReceived + '/60 !'}
           </span>
         </Tooltip>;
       } else {
@@ -72,6 +72,7 @@ const columns = [
     },
   },
 ];
+
 class statsTable extends React.Component {
   constructor(props) {
     super(props);
@@ -81,9 +82,8 @@ class statsTable extends React.Component {
     };
   }
 
-  componentDidMount() {
-    // Simple GET request using fetch
-    fetch(dataUrl + this.props.address)
+  fetchData(address) {
+    fetch(dataUrl + address)
       .then((response) => response.json())
       .then((data) => {
         const statsList = [];
@@ -129,6 +129,17 @@ class statsTable extends React.Component {
         }
         this.setState({ leaderboardStats: statsList });
       });
+  }
+
+  componentDidMount() {
+    // Simple GET request using fetch
+    this.fetchData(this.props.address);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.address !== prevProps.address) {
+      this.fetchData(this.props.address);
+    }
   }
 
   render() {
