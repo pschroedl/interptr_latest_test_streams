@@ -1,12 +1,12 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 
-const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: path.resolve(__dirname, '/public/index.html'),
-  filename: 'index.html',
-  inject: 'body',
-});
+// const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+//   template: path.resolve(__dirname, '/public/index.html'),
+//   filename: 'index.html',
+//   inject: 'body',
+// });
 
 const BrotliPluginConfig = new BrotliPlugin({
   asset: '[path].br[query]',
@@ -72,5 +72,5 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'bundle.js',
   },
-  plugins: [HTMLWebpackPluginConfig, BrotliPluginConfig],
+  plugins: [BrotliPluginConfig],
 };
