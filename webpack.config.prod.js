@@ -1,23 +1,41 @@
-const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
 
-const terserPlugin = new TerserPlugin({
+const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: path.resolve(__dirname, '/public/index.html'),
+  filename: 'index.html',
+  inject: 'body',
+});
+
+const BrotliPluginConfig = new BrotliPlugin({
+  asset: '[path].br[query]',
+  test: /\.(js|css|html|svg)$/,
+  threshold: 10240,
+  minRatio: 0.8,
+});
+
+const TerserPlugin = require('terser-webpack-plugin');
+
+const TerserPluginConfig = new TerserPlugin({
   parallel: true,
+  // minify: TerserPlugin.uglifyJSMinify,
   terserOptions: {
     parse: {
       ecma: 8,
     },
-    compress: {
-      comparisons: false,
-      ecma: 5,
-      inline: 2,
-    },
+    compress: true,
+    // compress: {
+    //   comparisons: false,
+    //   ecma: 5,
+    //   inline: 2,
+    // },
     output: {
       ascii_only: true,
       ecma: 5,
     },
   },
+  extractComments: true,
 });
 
 module.exports = {
@@ -34,31 +52,25 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+        ],
       },
     ],
   },
   resolve: { extensions: ['*', '.js', '.jsx'] },
   optimization: {
     minimize: true,
-    minimizer: [terserPlugin],
-    // splitChunks: {
-    //   // chunks: 'async',
-    //   chunks: 'all',
-    //   name: false,
-    //   cacheGroups: {
-    //     styles: {
-    //       name: 'styles',
-    //       test: /\.css$/,
-    //       chunks: 'all',
-    //       enforce: true,
-    //     },
-    //   },
-    // },
+    minimizer: [
+      TerserPluginConfig,
+    ],
+    concatenateModules: true,
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/dist/',
     filename: 'bundle.js',
   },
+  plugins: [HTMLWebpackPluginConfig, BrotliPluginConfig],
 };
