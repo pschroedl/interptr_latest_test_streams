@@ -76,10 +76,11 @@ const columns = [
 class statsTable extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      address: props.address,
       leaderboardStats: [],
     };
+    this.fetchData(this.props.address);
   }
 
   fetchData(address) {
@@ -168,6 +169,7 @@ class statsTable extends React.Component {
               },
               tableLayout: 'fixed',
             }} />
+            <div className="hidden">{this.props.update}</div>
         </div>
       </div>
     );
@@ -176,6 +178,7 @@ class statsTable extends React.Component {
 
 statsTable.propTypes = {
   address: PropTypes.string,
+  update: PropTypes.number,
 };
 
 export default statsTable;
