@@ -34,7 +34,7 @@ class App extends React.Component {
     });
   }
 
-  setAddress(event) {debugger;
+  setAddress(event) {
     event.preventDefault();
     const address = this.state.textFieldInput;
     const update = this.state.update + 1;
@@ -58,7 +58,7 @@ class App extends React.Component {
               <TextField id="filled-basic" className="addressField"
                 label="Orchestrator Address"
                 variant="filled"
-                defaultValue=""
+                defaultValue={this.state.orchAddress}
                 onChange={(e) => this.handleTextFieldChange(e)}
                 onKeyPress={(e) => this.catchReturn(e)}>
                 Enter Orch Addr:
