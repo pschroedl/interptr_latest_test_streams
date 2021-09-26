@@ -20,9 +20,7 @@ class App extends React.Component {
     super(props);
 
     const address = getParams(window.location);
-    debugger;
     this.state = {
-      // orchAddress: '0x10e0A91E652b05e9C7449ff457Cf2E96C3037fB7',
       orchAddress: address,
       textFieldInput: address,
       update: 0,
@@ -36,13 +34,12 @@ class App extends React.Component {
     });
   }
 
-  setAddress(event) {
-    debugger;
+  setAddress(event) {debugger;
     event.preventDefault();
     const address = this.state.textFieldInput;
     const update = this.state.update + 1;
     setParams({ address });
-    this.setState({ orchAddress: address });  
+    this.setState({ orchAddress: address });
     this.setState({ update });
   }
 
@@ -61,7 +58,7 @@ class App extends React.Component {
               <TextField id="filled-basic" className="addressField"
                 label="Orchestrator Address"
                 variant="filled"
-                defaultValue="0x10e0A91E652b05e9C7449ff457Cf2E96C3037fB7"
+                defaultValue=""
                 onChange={(e) => this.handleTextFieldChange(e)}
                 onKeyPress={(e) => this.catchReturn(e)}>
                 Enter Orch Addr:
