@@ -1,7 +1,20 @@
 const path = require('path');
 const webpack = require('webpack');
+const dotenv = require('dotenv');
 
+// Load environment variables from .env file
+const env = dotenv.config().parsed;
+
+// Create an object that maps the environment variables to be accessible in your app
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 module.exports = {
+  devServer: {
+    port: 5173,
+    allowedHosts: 'all',
+  },
   entry: './src/index.js',
   mode: 'development',
   module: {
@@ -24,5 +37,8 @@ module.exports = {
     publicPath: '',
     filename: 'bundle.js',
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin(envKeys), // Inject environment variables
+  ],
 };
